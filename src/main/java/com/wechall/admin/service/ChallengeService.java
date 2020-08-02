@@ -5,6 +5,9 @@ import java.util.List;
 
 import com.wechall.admin.vo.Challenge;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ChallengeService {
     /**
      * @apiNote 챌린지 목록을 가져옴
