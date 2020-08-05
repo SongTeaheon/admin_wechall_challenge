@@ -1,9 +1,7 @@
 package com.wechall.admin.domain.challenge.controller.api;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import com.wechall.admin.domain.challenge.model.entity.Challenge;
+import com.google.gson.GsonBuilder;
 import com.wechall.admin.domain.challenge.service.ChallengeService;
 import com.wechall.admin.global.common.Constant;
 
@@ -18,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class ChallengeApiController {
@@ -30,18 +31,9 @@ public class ChallengeApiController {
 
     @GetMapping("/challenge")
     @ResponseBody
-    public List<Challenge> getChallengeList(
+    public String getChallengeList(
             @RequestParam(value = "inputData", required = false, defaultValue = Constant.EMPTY_STRING) final String inputData) {
-        return challengeService.getChallengeList();
-    }
-
-    @GetMapping("/challenge/{challengeNo}")
-    @ResponseBody
-    public Challenge getChallengeInfo(
-            @RequestParam(value = "inputData", required = false, defaultValue = Constant.EMPTY_STRING) final String inputData,
-            @PathVariable("challengeNo") long challengeNo) {
-
-        return challengeService.getChallenge(challengeNo);
+        return new GsonBuilder().create().toJson(challengeService.getChallengeList());
     }
 
     @PostMapping("/challenge")
