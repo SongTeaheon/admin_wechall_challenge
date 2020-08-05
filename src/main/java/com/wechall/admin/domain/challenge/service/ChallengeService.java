@@ -25,13 +25,4 @@ public class ChallengeService {
     public List<Challenge> getChallengeList() {
         return challengeRepository.findAll();
     }
-
-    /** 
-     * @apiNote 챌린지 단건 정보를 가져옴
-     * @param
-     * @return Challenge
-     */
-    public Challenge getChallenge(long challengeNo) {
-        return challengeRepository.findAllById(challengeNo);
-    }
 }
