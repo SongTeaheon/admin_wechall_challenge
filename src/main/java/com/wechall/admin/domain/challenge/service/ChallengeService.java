@@ -2,7 +2,7 @@ package com.wechall.admin.domain.challenge.service;
 
 import java.util.List;
 
-import com.wechall.admin.domain.challenge.model.vo.Challenge;
+import com.wechall.admin.domain.challenge.model.entity.Challenge;
 import com.wechall.admin.domain.challenge.repository.ChallengeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,8 @@ public class ChallengeService {
      * @param
      * @return List<Challenge>
      */
-    public List<Challenge> getChallenge() {
-        return challengeRepository.selectChallenge();
+    public List<Challenge> getChallengeList() {
+        return challengeRepository.findAll();
     }
 
     /** 
@@ -31,31 +31,7 @@ public class ChallengeService {
      * @param
      * @return Challenge
      */
-    public Challenge getChallengeInfo(int challengSeqno) {
-        return new Challenge(challengSeqno, "test");
+    public Challenge getChallenge(long challengeNo) {
+        return challengeRepository.findAllById(challengeNo);
     }
-
-    /** 
-     * @apiNote 챌린지 정보를 등록
-     * @param
-     * @return
-     */
-	public void insertChallenge() {
-	}
-
-    /** 
-     * @apiNote 챌린지 정보를 수정
-     * @param
-     * @return
-     */
-	public void registChallengeInfo(int challengeSeqno) {
-	}
-
-    /** 
-     * @apiNote 챌린지 정보를 삭제
-     * @param
-     * @return
-     */
-	public void modifyChallengeInfo(int challengeSeqno) {
-	}
 }

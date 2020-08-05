@@ -3,7 +3,7 @@ package com.wechall.admin.domain.challenge.controller.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wechall.admin.domain.challenge.model.vo.Challenge;
+import com.wechall.admin.domain.challenge.model.entity.Challenge;
 import com.wechall.admin.domain.challenge.service.ChallengeService;
 import com.wechall.admin.global.common.Constant;
 
@@ -30,41 +30,38 @@ public class ChallengeApiController {
 
     @GetMapping("/challenge")
     @ResponseBody
-    public String getChallenge(
+    public List<Challenge> getChallengeList(
             @RequestParam(value = "inputData", required = false, defaultValue = Constant.EMPTY_STRING) final String inputData) {
-            List<Challenge> list = new ArrayList<>();
-            list.add(new Challenge(1, "test1"));
-            list.add(new Challenge(2, "test2"));
-        return list.toString();
+        return challengeService.getChallengeList();
     }
 
-    @GetMapping("/challenge/{challengeSeqno}")
+    @GetMapping("/challenge/{challengeNo}")
     @ResponseBody
     public Challenge getChallengeInfo(
             @RequestParam(value = "inputData", required = false, defaultValue = Constant.EMPTY_STRING) final String inputData,
-            @PathVariable("challengeSeqno") int challengeSeqno) {
+            @PathVariable("challengeNo") long challengeNo) {
 
-        return challengeService.getChallengeInfo(challengeSeqno);
+        return challengeService.getChallenge(challengeNo);
     }
 
     @PostMapping("/challenge")
     @ResponseBody
     public void registChallengeInfo(
             @RequestParam(value = "inputData", required = false, defaultValue = Constant.EMPTY_STRING) final String inputData,
-            @PathVariable("challengeSeqno") int challengeSeqno) {
+            @PathVariable("challengeNo") long challengeNo) {
     }
 
     @PutMapping("/challenge")
     @ResponseBody
     public void modifyChallengeInfo(
             @RequestParam(value = "inputData", required = false, defaultValue = Constant.EMPTY_STRING) final String inputData,
-            @PathVariable("challengeSeqno") int challengeSeqno) {
+            @PathVariable("challengeNo") long challengeNo) {
     }
 
     @DeleteMapping("/challenge")
     @ResponseBody
     public void removeChallengeInfo(
             @RequestParam(value = "inputData", required = false, defaultValue = Constant.EMPTY_STRING) final String inputData,
-            @PathVariable("challengeSeqno") int challengeSeqno) {
+            @PathVariable("challengeNo") long challengeNo) {
     }
 }
