@@ -9,9 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @Entity
 @Table(name="WC_POST_TB", schema="WE_CHALL")
 public class Post {
@@ -57,35 +57,5 @@ public class Post {
             "수정시간 : " + this.changeDate + "\n" +
             "포스트상태 : " + this.postState
         ;
-    }
-	public Long getPostNo() {
-		return postNo;
-    }
-	public Long getChallengeNo() {
-		return challengeNo;
-	}
-	public Long getUserNo() {
-		return userNo;
-	}
-	public String getContents() {
-		return contents;
-	}
-	
-	public Date getRegistDate() {
-		return registDate;
-	}
-
-	public Date getChangeDate() {
-		return changeDate;
-	}
-
-	public Long getPostState() {
-		return postState;
-	}
-
-
-
-    
-
-    
+    }   
 }
