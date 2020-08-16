@@ -32,7 +32,7 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post getPostById(Long postId){
-        return postRepository.findByIdTest(postId);
+    public List<Post> searchByConditions(Post post){
+        return postRepository.findByDynamicCondition(post);
     }
 }

@@ -43,8 +43,8 @@ public class PostApiController {
         return postService.savePost(post).toString();
     }
 
-    @GetMapping("/{postId}")
-    public String getByIdTest(@PathVariable Long postId){
-        return postService.getPostById(postId).toString();
+    @PostMapping("/search")
+    public String searchByDynamicCondition(@RequestBody Post post){
+        return postService.searchByConditions(post).toString();
     }
 }
