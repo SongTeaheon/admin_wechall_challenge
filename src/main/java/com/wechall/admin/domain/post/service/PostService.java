@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.wechall.admin.domain.post.model.entity.Post;
 import com.wechall.admin.domain.post.repository.PostRepository;
-
 import org.springframework.stereotype.Service;
 
 @Service
 public class PostService {
+
+
     private final PostRepository postRepository;
 
     public PostService(PostRepository postRepository){
@@ -29,5 +30,9 @@ public class PostService {
 
     public Post savePost(Post post){
         return postRepository.save(post);
+    }
+
+    public Post getPostById(Long postId){
+        return postRepository.findByIdTest(postId);
     }
 }

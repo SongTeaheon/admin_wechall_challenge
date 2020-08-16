@@ -2,7 +2,6 @@ package com.wechall.admin.domain.post.controller.api;
 
 import com.wechall.admin.domain.post.model.entity.Post;
 import com.wechall.admin.domain.post.service.PostService;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,5 +41,10 @@ public class PostApiController {
     public String modifyPost(@PathVariable Long postId, @RequestBody Post post){
         post.setPostNo(postId);
         return postService.savePost(post).toString();
+    }
+
+    @GetMapping("/{postId}")
+    public String getByIdTest(@PathVariable Long postId){
+        return postService.getPostById(postId).toString();
     }
 }
