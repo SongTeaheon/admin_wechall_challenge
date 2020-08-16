@@ -53,7 +53,7 @@ test {
 
 //querydsl 추가 시작
 
-def querydslDir = "src/main/java/generated"
+def querydslDir = "src/main/generated"
 
 querydsl {
 	library = "com.querydsl:querydsl-apt"

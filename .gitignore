@@ -34,4 +34,4 @@ out/
 .vscode/
 
 ### queryDsl qClass ###
-src/main/java/generated/
+src/main/generated/
