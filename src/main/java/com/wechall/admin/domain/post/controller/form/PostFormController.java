@@ -31,7 +31,7 @@ public class PostFormController {
         if(images == null) {
             log.info("images is null");
         }
-        List<String> imgPaths = imageStoreService.saveImages(images);
+        List<String> imgPaths = imageStoreService.saveFiles(images, 1);
         log.info(imgPaths.toString());
 
         return imgPaths.toString();
