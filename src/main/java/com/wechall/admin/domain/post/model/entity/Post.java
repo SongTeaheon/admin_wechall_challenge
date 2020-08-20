@@ -1,17 +1,20 @@
 package com.wechall.admin.domain.post.model.entity;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @Entity
 @Table(name="WC_POST_TB", schema="WE_CHALL")
 public class Post {
@@ -39,6 +42,9 @@ public class Post {
     @Column(name = "POST_STATE")
     private Long postState = 0l;
 
+    @OneToMany(mappedBy = "post")
+    List<PostImg> images = new ArrayList<>();
+
     public Post(){}
     public Post(Long challengeNo, Long userNo, String cont){
         this.challengeNo = challengeNo;
@@ -57,5 +63,9 @@ public class Post {
             "수정시간 : " + this.changeDate + "\n" +
             "포스트상태 : " + this.postState
         ;
-    }   
+    }
+    
+    public void setImages(List<PostImg> images){
+        this.images = images;
+    }
 }

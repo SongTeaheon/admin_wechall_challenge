@@ -10,6 +10,8 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 
+import com.wechall.admin.domain.post.model.entity.Post;
+import com.wechall.admin.domain.post.model.entity.PostImg;
 import lombok.extern.slf4j.Slf4j;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
@@ -25,26 +27,48 @@ public class ImageStoreService {
         this.context = context;
     }
 
-    public List<String> saveFiles(MultipartFile[] files, long challengeNo) {
+    public List<PostImg> saveFiles(MultipartFile[] files, Post post) {
 
-        List<String> filePaths = new ArrayList<>();
+        if(files == null ){
+            log.info("files is null");
+            return null;
+        }
 
-        String uploadPath = createFolder("challengeNo" + challengeNo);
+        if(post == null ){
+            log.info("post is null");
+            return null;
+        }
+
+        List<PostImg> images = new ArrayList<>();
+
+        String uploadPath = createFolder("challengeNo" + post.getChallengeNo());
 
         try {
             for (MultipartFile multipartFile : files) {
+
+                //이미지 생성
                 File createdFile = saveSingleFile(multipartFile, uploadPath);
+                File thumbFile = null;
+
+                //썸네일 생성
                 if(isImage(createdFile)){
-                    saveThumbnail(createdFile.getName(), uploadPath);
+                    thumbFile = saveThumbnail(createdFile, uploadPath);
                 }
 
-                filePaths.add(createdFile.getAbsolutePath());
+                //객체로 담는다
+                PostImg postImg = PostImg.builder()
+                                    .imgPath(createdFile.getAbsolutePath())
+                                    .thumnailPath(thumbFile.getAbsolutePath())
+                                    .post(post)
+                                    .build();
+                //list에 넣는다                    
+                images.add(postImg);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return filePaths;
+        return images;
     }
 
     private String createFolder(String lastFolderName) {
@@ -80,7 +104,10 @@ public class ImageStoreService {
         return false;
     }
 
-    private void saveThumbnail(String originFileName, String uploadPath){
+    private File saveThumbnail(File imgFile, String uploadPath){
+
+        File thumbFile = null;
+        String originFileName =imgFile.getName();
         try{
             BufferedImage bufferedImage = ImageIO.read(new File(uploadPath, originFileName));
 
@@ -103,12 +130,13 @@ public class ImageStoreService {
 
             //목표 사이즈로 resize
             BufferedImage destImg = Scalr.resize(cropImg, destWidth, destHeight);
-            File thumbFile = new File(uploadPath, "thumbnail_"+originFileName);
+            thumbFile = new File(uploadPath, "thumbnail_"+originFileName);
             String formatName = originFileName.substring(originFileName.lastIndexOf(".")+1);
             ImageIO.write(destImg, formatName, thumbFile);
         }catch(Exception e){
             e.printStackTrace();
         }
         
+        return thumbFile;
     }
 }

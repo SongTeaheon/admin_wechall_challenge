@@ -10,6 +10,9 @@
 <body>
     <form action="/form/post/upload" method="post" enctype="multipart/form-data">
          <input type="file" name="files" multiple> 
+         <input type="number" name="challengeNo">
+         <input type="text" name="cont">
+         <input type="number" name="userNo">
          <button type="submit">보내기</button> </form>
 </body>
 

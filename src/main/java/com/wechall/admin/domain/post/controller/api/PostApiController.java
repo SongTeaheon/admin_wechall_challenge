@@ -39,7 +39,9 @@ public class PostApiController {
 
     @PutMapping("/{postId}")
     public String modifyPost(@PathVariable Long postId, @RequestBody Post post){
-        post.setPostNo(postId);
+        if(post.getPostNo() != postId){
+            return "something wrong";
+        }
         return postService.savePost(post).toString();
     }
 
