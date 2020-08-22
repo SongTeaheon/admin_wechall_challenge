@@ -9,5 +9,6 @@ public interface PostRepository extends JpaRepository<Post, Long>, PostCustomRep
     List<Post> findAll();
     List<Post> findByChallengeNo(Long challengeNo);
     <S extends Post> S save(S post);
+    Post findByPostNo(Long postNo);
    
 }

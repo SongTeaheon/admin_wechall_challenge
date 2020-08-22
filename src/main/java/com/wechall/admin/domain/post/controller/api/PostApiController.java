@@ -1,5 +1,7 @@
 package com.wechall.admin.domain.post.controller.api;
 
+import com.google.gson.Gson;
+import com.wechall.admin.domain.post.model.dto.PostDetailDto;
 import com.wechall.admin.domain.post.model.entity.Post;
 import com.wechall.admin.domain.post.service.PostService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/post")
@@ -26,9 +30,17 @@ public class PostApiController {
         return postService.getPostList().toString();
     }
 
+    @GetMapping("/{postId}")
+    public PostDetailDto getPostDetail(@PathVariable Long postId){
+        return postService.getPostDetail(postId);
+    }
+
     @PostMapping("/new")
-    public String registPost(@RequestBody Post post) {
-        return postService.createPost(post).toString();
+    public String registPost(@RequestParam("files") MultipartFile[] images, @RequestParam("post") String postJson) {
+        Gson gson = new Gson();
+        Post post = gson.fromJson(postJson, Post.class);
+        
+        return postService.createPost(post, images).toString();
     }
 
     @DeleteMapping("/{postId}")
