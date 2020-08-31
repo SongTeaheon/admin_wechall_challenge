@@ -35,3 +35,6 @@ out/
 
 ### queryDsl qClass ###
 src/main/generated/
+
+### 맥 OS X 시스템이 폴더에 접근할 때 생기는 해당 폴더에 대한 메타데이터를 저장하는 파일 ###
+.DS_Store
