@@ -1,9 +1,11 @@
 package com.wechall.admin.domain.post.controller.api;
 
-import com.google.gson.Gson;
+import com.wechall.admin.domain.post.model.dto.NewPostDto;
+import com.wechall.admin.domain.post.model.dto.PostContentChangeDto;
 import com.wechall.admin.domain.post.model.dto.PostDetailDto;
 import com.wechall.admin.domain.post.model.entity.Post;
 import com.wechall.admin.domain.post.service.PostService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,10 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/post")
 public class PostApiController {
@@ -35,12 +36,15 @@ public class PostApiController {
         return postService.getPostDetail(postId);
     }
 
+    @PostMapping("/search")
+    public String searchByDynamicCondition(@RequestBody Post post){
+        return postService.searchByConditions(post).toString();
+    }
+
     @PostMapping("/new")
-    public String registPost(@RequestParam("files") MultipartFile[] images, @RequestParam("post") String postJson) {
-        Gson gson = new Gson();
-        Post post = gson.fromJson(postJson, Post.class);
-        
-        return postService.createPost(post, images).toString();
+    public String registPost(@RequestBody NewPostDto newPost) {
+        log.info(newPost.toString());
+        return postService.createPost(newPost).toString();
     }
 
     @DeleteMapping("/{postId}")
@@ -49,16 +53,10 @@ public class PostApiController {
         return "deleted";
     }
 
-    @PutMapping("/{postId}")
-    public String modifyPost(@PathVariable Long postId, @RequestBody Post post){
-        if(post.getPostNo() != postId){
-            return "something wrong";
-        }
-        return postService.savePost(post).toString();
+    @PutMapping("/modify")
+    public String modifyPostContents(@RequestBody PostContentChangeDto post){
+        return postService.modifyContents(post).toString();
     }
 
-    @PostMapping("/search")
-    public String searchByDynamicCondition(@RequestBody Post post){
-        return postService.searchByConditions(post).toString();
-    }
+    
 }

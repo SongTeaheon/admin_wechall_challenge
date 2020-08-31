@@ -37,8 +37,8 @@ public class PostImg {
     @Column(name="IMG_PATH", nullable = false)
     private String imgPath;
 
-    @Column(name="THUMBNAIL_PATH")
-    private String thumnailPath;
+    @Column(name="SEQ", nullable = false)
+    private Long seq;
 
     @Column(name = "REG_TIME", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date registDate;
@@ -48,5 +48,9 @@ public class PostImg {
 
     @Column(name="IMG_STATE", columnDefinition = "INTEGER DEFAULT '0'")
     private Long imgState;
+
+    public void setPost(Post post){
+        this.post = post;
+    }
 
 }

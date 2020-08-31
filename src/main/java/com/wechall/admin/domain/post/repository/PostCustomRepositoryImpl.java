@@ -5,6 +5,7 @@ import java.util.List;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.wechall.admin.domain.post.model.entity.Post;
 import com.wechall.admin.domain.post.model.entity.QPost;
+import com.wechall.admin.global.common.PostState;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 public class PostCustomRepositoryImpl extends QuerydslRepositorySupport implements PostCustomRepository {
@@ -41,7 +42,7 @@ public class PostCustomRepositoryImpl extends QuerydslRepositorySupport implemen
         return QPost.post.userNo.eq(userNo);
     }
 
-    private BooleanExpression eqPostState(Long postState){
+    private BooleanExpression eqPostState(PostState postState){
         if(postState == null) return null;
         return QPost.post.postState.eq(postState);
     }
