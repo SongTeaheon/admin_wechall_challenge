@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.wechall.admin.domain.post.model.dto.NewPostDto;
+import com.wechall.admin.domain.post.model.dto.PostContentChangeDto;
 import com.wechall.admin.domain.post.model.dto.PostDetailDto;
 import com.wechall.admin.domain.post.model.entity.Post;
 import com.wechall.admin.domain.post.model.entity.PostImg;
@@ -14,6 +15,7 @@ import com.wechall.admin.domain.post.repository.PostImgRepository;
 import com.wechall.admin.domain.post.repository.PostRepository;
 import com.wechall.admin.global.common.Constant;
 import com.wechall.admin.global.common.ImgState;
+import com.wechall.admin.global.common.PostState;
 import com.wechall.admin.global.util.ImageStoreService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,7 +47,8 @@ public class PostService {
         }
         List<PostImg> imgList = null;
         Post post =  new Post(newPost.getChallengeNo(), newPost.getUserNo(), newPost.getContents());
-        
+        post.setPostState(PostState.OK);
+
         try{
             imgList = saveImgPosts(newPost.getImages(), post);
         }catch(IOException e){
@@ -63,12 +66,15 @@ public class PostService {
     }
 
     public void deletePost(Long postId){
-        postRepository.deleteById(postId);
+        Post post = postRepository.findByPostNo(postId);
+        post.setPostState(PostState.DELETED);
+        postRepository.save(post);
     }
 
     public Post savePost(Post post){
         return postRepository.save(post);
     }
+
 
     public List<PostDetailDto> searchByConditions(Post post){
         return postRepository.findByDynamicCondition(post).stream()     
@@ -84,12 +90,13 @@ public class PostService {
     private List<PostImg> saveImgPosts(List<String> pathList, Post post) throws IOException{
 
         List<PostImg> imgList = new ArrayList<>();
+
+        Long imgSeq = 0L;
         for(String tempImgPath : pathList){
             //1. 이미지 카피
             File imgFile = imageStoreService.copyFile(tempImgPath, imageStoreService.getRealPath(Constant.IMG_PATH_POST));
             
-            //2. 채번
-            Long imgSeq = 1l;
+            imgSeq += 1;
 
             //3. 이미지 객체 생성
             PostImg postImg = PostImg.builder()
@@ -102,5 +109,13 @@ public class PostService {
             imgList.add(postImg);
         }
         return imgList;     
+    }
+
+    public PostDetailDto modifyContents(PostContentChangeDto postDto){
+        Post post = postRepository.findByPostNo(postDto.getPostNo());
+        post.setContents(postDto.getContents());
+        post = postRepository.save(post);
+
+        return new PostDetailDto(post);
     }
 }

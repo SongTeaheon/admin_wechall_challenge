@@ -1,6 +1,7 @@
 package com.wechall.admin.domain.post.controller.api;
 
 import com.wechall.admin.domain.post.model.dto.NewPostDto;
+import com.wechall.admin.domain.post.model.dto.PostContentChangeDto;
 import com.wechall.admin.domain.post.model.dto.PostDetailDto;
 import com.wechall.admin.domain.post.model.entity.Post;
 import com.wechall.admin.domain.post.service.PostService;
@@ -35,6 +36,11 @@ public class PostApiController {
         return postService.getPostDetail(postId);
     }
 
+    @PostMapping("/search")
+    public String searchByDynamicCondition(@RequestBody Post post){
+        return postService.searchByConditions(post).toString();
+    }
+
     @PostMapping("/new")
     public String registPost(@RequestBody NewPostDto newPost) {
         log.info(newPost.toString());
@@ -48,12 +54,9 @@ public class PostApiController {
     }
 
     @PutMapping("/modify")
-    public String modifyPost(@RequestBody Post post){
-        return postService.savePost(post).toString();
+    public String modifyPostContents(@RequestBody PostContentChangeDto post){
+        return postService.modifyContents(post).toString();
     }
 
-    @PostMapping("/search")
-    public String searchByDynamicCondition(@RequestBody Post post){
-        return postService.searchByConditions(post).toString();
-    }
+    
 }
