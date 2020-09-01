@@ -8,9 +8,4 @@ import lombok.Getter;
 public class NewUserDto {
     private String name;
     private String imgTempPath;
-
-    public NewUserDto(String name){
-        this.name = name;
-    }
-
 }
